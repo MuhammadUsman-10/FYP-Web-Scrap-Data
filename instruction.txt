@@ -1,9 +1,0 @@
-write a code for scrapping data from the given website using beautifulsoup
-url = https://www.pakstyle.pk/cat/party-wear-dresses
-outerdiv = find div with class = on_list_view_false products nt_products_holder row fl_center row_pr_1 cdt_des_1 round_cd_false nt_cover ratio_nt position_8 space_30 nt_default
-individual_prod_div= then inside this div find div with class = col-md-3 col-6 pr_animated done mt__30 pr_grid_item product nt_pr desgin__1
-individual_pro_url = then find a with class = d-block
-individual_pro_img_url = then find div with class = pr_lazy_img main-img nt_img_ratio nt_bg_lz padding-top__127_571 lazyloaded and an attribute data-set to have the link to the prod image
-then find all h3 with class = product-title pr fs__14 mg__0 fwm and store title of each product in prod_title
-then find span tag with class = price dib mb__5 and store the actual price in actual_price & discounted price in discounted_price
-store this data into an excel file

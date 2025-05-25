@@ -1,29 +1,12 @@
 import time
-import pandas as pd
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
+from bs4 import BeautifulSoup
 from pymongo import MongoClient
 from bson.objectid import ObjectId
-import os
-# from dotenv import load_dotenv
-
-# # Define the URL
-# load_dotenv()
-# # Load environment variables from .env file
-# MONGO_URI = os.getenv("MONGO_URI")
 
 
-# # Check if the environment variable is loaded
-# if not os.getenv("MONGO_URI"):
-#     print("MONGO_URI not found in environment variables.")
-# else:
-#     print("MONGO_URI loaded successfully.")
-
-
-# # MongoDB setup
-# client = MongoClient(MONGO_URI)  # Use the environment variable for MongoDB connection for Production
-# # Uncomment the line below for local testing
 client = MongoClient("mongodb://localhost:27017/")  # Local Environment MongoDB connection
 db = client["ShopSMart-Fyp"]
 collection = db["products"]
@@ -32,7 +15,7 @@ collection = db["products"]
 driver = webdriver.Edge()
 # Fetch all products with empty reviews
 products = collection.find({
-    "category": "mens-shirts",
+    "category": "mens-shoes",
     "reviews": {"$size": 0}
 })
 

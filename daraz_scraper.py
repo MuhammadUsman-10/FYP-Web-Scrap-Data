@@ -1,69 +1,17 @@
 from selenium import webdriver
-from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
-from openpyxl.workbook import Workbook
 from bs4 import BeautifulSoup
-import pandas as pd
 import time
 from pymongo import MongoClient
-import os
-# from dotenv import load_dotenv
 
-# load_dotenv()
-# # Load environment variables from .env file
-# MONGO_URI = os.getenv("MONGO_URI")
-
-
-# # Check if the environment variable is loaded
-# if not os.getenv("MONGO_URI"):
-#     print("MONGO_URI not found in environment variables.")
-# else:
-#     print("MONGO_URI loaded successfully.")
-
-
-# MongoDB setup
-# client = MongoClient(MONGO_URI)  # Use the environment variable for MongoDB connection for Production
-
-# Uncomment the line below for local testing
 client = MongoClient("mongodb://localhost:27017/")  # Local Environment MongoDB connection
-db = client["ShopSMart-Fyp"]
+db = client["ShopSMart"]
 collection = db["products"]
 
 # Set up Selenium WebDriver
 driver = webdriver.Edge()
 
-# Clothing Urls to scrape
-# url = "https://www.daraz.pk/mens-clothing/"
-# url = "https://www.daraz.pk/mens-clothing/?page=2"
-# url = "https://www.daraz.pk/mens-clothing/?page=3"
-
-# T-shirts/Trousers Urls to scrape
-# url = "https://www.daraz.pk/mens-t-shirts/"
-# url = "https://www.daraz.pk/mens-t-shirts/?page=2"
-# url = "https://www.daraz.pk/mens-t-shirts/?page=3"
-url = "https://www.daraz.pk/mens-polo-shirts/"
-# url = "https://www.daraz.pk/mens-polo-shirts/?page=2"
-# url = "https://www.daraz.pk/mens-polo-shirts/?page=3"
-# url = "https://www.daraz.pk/mens-jeans/"
-# url = "https://www.daraz.pk/mens-jeans/?page=2"
-# url = "https://www.daraz.pk/mens-jeans/?page=3"
-# url = "https://www.daraz.pk/mens-sweat-pants/"
-# url = "https://www.daraz.pk/mens-sweat-pants/?page=2"
-# url = "https://www.daraz.pk/mens-sweat-pants/?page=3"
-
-# Hoodies/Sweatshirts Urls to scrape
-# url = "https://www.daraz.pk/mens-hoodies/"
-# url = "https://www.daraz.pk/mens-hoodies/?page=2"
-# url = "https://www.daraz.pk/mens-hoodies/?page=3"
-
-# Clothes Urls to scrape
-# url = "https://www.daraz.pk/mens-unstitched-fabric/"
-# url = "https://www.daraz.pk/mens-unstitched-fabric/?page=2"
-# url = "https://www.daraz.pk/mens-unstitched-fabric/?page=3"
-# url = "https://www.daraz.pk/mens-shawls/"
-# url = "https://www.daraz.pk/mens-shawls/?page=2"
-# url = "https://www.daraz.pk/mens-shawls/?page=3"
-
+url = "https://www.daraz.pk/catalog/?from=hp_categories&page=10&q=Womens%20Shoes&service=all_channel&spm=a2a0e.searchlist.cate_11_2.1.794c7db4KMPXaZ&src=all_channel"
 
 driver.get(url)
 
@@ -158,17 +106,29 @@ for card in outer_div.find_all("div", class_="Bm3ON"):
                     if product_stats_div1:
                         sku_props = product_stats_div1.find_all("div", class_="sku-prop")
                         if len(sku_props) >= 2:
-                            product_stats_div2 = sku_props[1]; # Get the second SKU prop
-                            if product_stats_div2:
-                                product_stats_div3 = product_stats_div2.find("div", class_="pdp-mod-product-info-section sku-prop-selection")
+                            colors_div = sku_props[0]; # Get the second SKU prop
+                            if colors_div:
+                                product_stats_div3 = colors_div.find("div", class_="pdp-mod-product-info-section sku-prop-selection")
+                                if product_stats_div3:
+                                    product_stats_div4 = product_stats_div3.find("div", class_="section-content")
+                                    if product_stats_div4:
+                                        product_stats_div5 = product_stats_div4.find("div", class_="sku-prop-content-header")
+                                        if product_stats_div5:
+                                            colors_span = product_stats_div5.find("span", class_="sku-name")
+                                            colors = colors_span.text.strip() if colors_span else None
+                                            print(f"Available Colors: {colors}")
+                            sizes_div = sku_props[1]; # Get the second SKU prop
+                            if sizes_div:
+                                product_stats_div3 = sizes_div.find("div", class_="pdp-mod-product-info-section sku-prop-selection")
                                 if product_stats_div3:
                                     product_stats_div4 = product_stats_div3.find("div", class_="section-content")
                                     if product_stats_div4:
                                         product_stats_div5 = product_stats_div4.find("div", class_="sku-prop-content sku-prop-content-")
                                         if product_stats_div5:
+                                            sizes_span = product_stats_div5.find_all("span", class_=["sku-variable-size", "sku-variable-size-selected"])
                                             sizes = []
                                             # Get all available sizes and selected size
-                                            for size_item in product_stats_div5.find_all("span", class_=["sku-variable-size", "sku-variable-size-selected"]):
+                                            for size_item in sizes_span if sizes_span else []:
                                                 size_text = size_item.text.strip()
                                                 if size_text:
                                                     sizes.append(size_text)
@@ -181,8 +141,25 @@ for card in outer_div.find_all("div", class_="Bm3ON"):
                                     print("No Product Stats Div 3 Text found")
                             else:
                                 print("No Product Stats Div 2 found")
+                        elif len(sku_props) == 1:
+                            product_stats_div2 = sku_props[0]; # Get the second SKU prop
+                            if product_stats_div2:
+                                product_stats_div3 = product_stats_div2.find("div", class_="pdp-mod-product-info-section sku-prop-selection")
+                                if product_stats_div3:
+                                    product_stats_div4 = product_stats_div3.find("div", class_="section-content")
+                                    if product_stats_div4:
+                                        product_stats_div5 = product_stats_div4.find("div", class_="sku-prop-content sku-prop-content-")
+                                        if product_stats_div5:
+                                            sizes_span = product_stats_div5.find_all("span", class_=["sku-variable-size", "sku-variable-size-selected"])
+                                            sizes = []
+                                            # Get all available sizes and selected size
+                                            for size_item in sizes_span if sizes_span else []:
+                                                size_text = size_item.text.strip()
+                                                if size_text:
+                                                    sizes.append(size_text)
+                                            print(f"All available sizes: {sizes}")
                         else:
-                            print("Not enough SKU Props found")
+                            print("No SKU Propsfound")
                     else:
                         print("No Product Stats Div 1 found")
                 else:
@@ -231,6 +208,8 @@ for card in outer_div.find_all("div", class_="Bm3ON"):
         time.sleep(2)
         driver.execute_script("window.scrollTo(1000, 1300);")
         time.sleep(2)
+        driver.execute_script("window.scrollTo(1300, 1500);")
+        time.sleep(1)
         # First find the review section
         rating__div = driver.find_element(By.XPATH, '//*[@id="module_product_review"]/div/div/div[1]/div[2]/div/div')
         if rating__div:
@@ -251,7 +230,7 @@ for card in outer_div.find_all("div", class_="Bm3ON"):
         "title": product_title,
         "brand": brand_name,
         "description": description,
-        "category": "mens-shirts",
+        "category": "womens-shoes",
         "colors": "N/A",
         "location": product_location,
         "currentPrice": current_price,
