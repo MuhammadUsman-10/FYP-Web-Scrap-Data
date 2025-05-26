@@ -15,7 +15,7 @@ collection = db["products"]
 driver = webdriver.Edge()
 # Fetch all products with empty reviews
 products = collection.find({
-    "category": "mens-shoes",
+    "category": "womens-shoes",
     "reviews": {"$size": 0}
 })
 
