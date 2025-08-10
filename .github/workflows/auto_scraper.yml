@@ -20,7 +20,12 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Run scraper
+      - name: Run all scrapers
         env:
           MONGO_URI: ${{ secrets.MONGO_URI }}
-        run: python daraz_scraper.py
+        run: |
+          python daraz_scraper.py
+          python khadii_scraper.py
+          python review_scraper.py
+          python sapphire_scraper.py
+          python description_generator.py
