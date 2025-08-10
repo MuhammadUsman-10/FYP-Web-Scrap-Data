@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Get MongoDB URI from environment variable, fallback to localhost if not set
-MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
+MONGO_URI = os.getenv("MONGO_URI")
 
 client = MongoClient(MONGO_URI)  # Use environment variable for MongoDB connection
 db = client["ShopSmart-Fyp"]
