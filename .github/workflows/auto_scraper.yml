@@ -25,7 +25,7 @@ jobs:
           MONGO_URI: ${{ secrets.MONGO_URI }}
         run: |
           python daraz_scraper.py
-          python khadii_scraper.py
-          python review_scraper.py
-          python sapphire_scraper.py
-          python description_generator.py
+        #   python khadii_scraper.py
+        #   python review_scraper.py
+        #   python sapphire_scraper.py
+        #   python description_generator.py
