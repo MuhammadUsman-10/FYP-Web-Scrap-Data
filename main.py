@@ -5,6 +5,12 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import time
 from pymongo import MongoClient
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
 
 # Set up Selenium WebDriver (use Chrome or any other driver you prefer)
 driver = webdriver.Edge()  # Ensure ChromeDriver is correctly installed
@@ -14,9 +20,12 @@ url = "https://www.pakstyle.pk/cat/party-wear-dresses"
 driver.get(url)
 
 # MongoDB connect
-client = MongoClient("mongodb://localhost:27017/")
+# Get MongoDB URI from environment variable, fallback to localhost if not set
+MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
+
+client = MongoClient(MONGO_URI)  # Use environment variable for MongoDB connection
 # Database and Collection select
-db = client["Web-Scraping"]
+db = client["ShopSmart-Fyp"]
 collection = db["products"]
 
 # Scroll down in small increments to load all products and images

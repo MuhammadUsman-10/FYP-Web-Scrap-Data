@@ -3,9 +3,17 @@ from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
 import time
 from pymongo import MongoClient
+import os
+from dotenv import load_dotenv
 
-client = MongoClient("mongodb://localhost:27017/")  # Local Environment MongoDB connection
-db = client["ShopSMart"]
+# Load environment variables from .env file
+load_dotenv()
+
+# Get MongoDB URI from environment variable, fallback to localhost if not set
+MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
+
+client = MongoClient(MONGO_URI)  # Use environment variable for MongoDB connection
+db = client["ShopSmart-Fyp"]
 collection = db["products"]
 
 # Set up Selenium WebDriver
