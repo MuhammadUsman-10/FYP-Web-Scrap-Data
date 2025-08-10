@@ -23,4 +23,4 @@ jobs:
       - name: Run scraper
         env:
           MONGO_URI: ${{ secrets.MONGO_URI }}
-        run: python scrape_daraz.py
+        run: python daraz_scraper.py
