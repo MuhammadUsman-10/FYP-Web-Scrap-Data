@@ -1,5 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.edge.options import Options
 from bs4 import BeautifulSoup
 import time
 from pymongo import MongoClient
@@ -17,7 +18,13 @@ db = client["ShopSmart-Fyp"]
 collection = db["products"]
 
 # Set up Selenium WebDriver
-driver = webdriver.Edge()
+options = Options()
+options.add_argument("--headless=new")  # New headless mode
+options.add_argument("--no-sandbox")
+options.add_argument("--disable-dev-shm-usage")
+options.add_argument("--disable-gpu")
+
+driver = webdriver.Edge(options=options)
 
 url = "https://www.daraz.pk/catalog/?from=hp_categories&page=10&q=Womens%20Shoes&service=all_channel&spm=a2a0e.searchlist.cate_11_2.1.794c7db4KMPXaZ&src=all_channel"
 
