@@ -18,12 +18,15 @@ db = client["ShopSmart-Fyp"]
 collection = db["products"]
 
 # Set up Selenium WebDriver
+# Temporary folder banate hain
+temp_user_data_dir = tempfile.mkdtemp()
+
 options = Options()
 options.add_argument("--headless=new")  # New headless mode
 options.add_argument("--no-sandbox")
 options.add_argument("--disable-dev-shm-usage")
 options.add_argument("--disable-gpu")
-# options.add_argument(f"--user-data-dir={tempfile.mkdtemp()}")  # unique temp dir
+options.add_argument(f"--user-data-dir={temp_user_data_dir}")  # unique temp dir
 
 driver = webdriver.Edge(options=options)
 
