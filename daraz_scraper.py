@@ -1,5 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 import time
 from pymongo import MongoClient
@@ -16,8 +17,15 @@ client = MongoClient(MONGO_URI)  # Use environment variable for MongoDB connecti
 db = client["ShopSmart-Fyp"]
 collection = db["products"]
 
-# Set up Selenium WebDriver
-driver = webdriver.Chrome()
+chrome_options = Options()
+chrome_options.add_argument("--headless")  # GUI off
+chrome_options.add_argument("--no-sandbox")
+chrome_options.add_argument("--disable-dev-shm-usage")
+chrome_options.add_argument("--disable-gpu")
+chrome_options.add_argument("--remote-debugging-port=9222")
+
+# Service path set karo (agar chromedriver PATH me ho to Service specify na bhi karo chalega)
+driver = webdriver.Chrome(options=chrome_options)
 
 url = "https://www.daraz.pk/catalog/?from=hp_categories&page=10&q=Womens%20Shoes&service=all_channel&spm=a2a0e.searchlist.cate_11_2.1.794c7db4KMPXaZ&src=all_channel"
 
