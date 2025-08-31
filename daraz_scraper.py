@@ -17,7 +17,7 @@ db = client["ShopSmart-Fyp"]
 collection = db["products"]
 
 # Set up Selenium WebDriver
-driver = webdriver.Edge()
+driver = webdriver.Chrome()
 
 url = "https://www.daraz.pk/catalog/?from=hp_categories&page=10&q=Womens%20Shoes&service=all_channel&spm=a2a0e.searchlist.cate_11_2.1.794c7db4KMPXaZ&src=all_channel"
 
