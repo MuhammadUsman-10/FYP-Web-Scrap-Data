@@ -16,7 +16,7 @@ openai.api_key = os.getenv('OPENAI_API_KEY')
 # Get MongoDB URI from environment variable, fallback to localhost if not set
 MONGO_URI = os.getenv("MONGO_URI")
 client = MongoClient(MONGO_URI)  # Use environment variable for MongoDB connection
-db = client["ShopSmart-Fyp"]
+db = client["shopsmart-fyp"]
 collection = db["products"]
 
 def generate_product_description(title, category):
@@ -31,13 +31,13 @@ def generate_product_description(title, category):
         Category: {category}
         
         Requirements:
-        - Keep it concise (3-4 sentences)
+        - Keep it concise (4-5 sentences)
         - Make it realistic and believable
         - Focus on key features and benefits
         - Use natural, marketing-friendly language
         - Don't be overly promotional
         - Include relevant details based on the title and category
-        - Also can include any unique selling points or features or points that make the product stand out (3-4 points) other than that 1st paragraph of 3-4 sentences.
+        - Also can include any unique selling points or features or points that make the product stand out (3-4 points) other than that 1st paragraph of 4-5 sentences.
         - Avoid Starting with "Elevate your" instaed start with some realistic approach for every product
         
         Generate only the description text, nothing else.
@@ -49,7 +49,7 @@ def generate_product_description(title, category):
                 {"role": "system", "content": "You are a professional product description writer. Generate concise, realistic product descriptions."},
                 {"role": "user", "content": prompt}
             ],
-            max_tokens=150,
+            max_tokens=200,
             temperature=0.7
         )
         
